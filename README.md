@@ -10,6 +10,7 @@ https://github.com/harshrajput4343/Medical-Chatbot-GenAi.git
 ```
 ### STEP 01- Create a conda environment after opening the repository
 
+
 ```bash
 conda create -n medchatbot python=3.10 -y
 ```
@@ -27,7 +28,7 @@ pip install -r requirements.txt
 
 ### Create a `.env` file in the root directory and add your Pinecone & openai credentials as follows:
 
-```ini
+```initilize
 PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 OPENAI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 GOOGLE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
