@@ -1,12 +1,18 @@
 # Stage 1: builder
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 WORKDIR /build
 COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
+RUN pip install --user --no-cache-dir -r requirements.txt && \
+    pip uninstall -y pinecone-plugin-inference
 
 # Stage 2: runtime
 FROM python:3.11-slim
 WORKDIR /app
+
+# Install curl for the healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN adduser --disabled-password --gecos "" appuser
 COPY --from=builder /root/.local /home/appuser/.local
 COPY . .
