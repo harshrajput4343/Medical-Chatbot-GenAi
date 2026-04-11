@@ -1,0 +1,14 @@
+[Unit]
+Description=Medical Chatbot v2
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/opt/medbot
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Stat Cards -->
+    <div class="glass p-6 rounded-3xl group hover:border-indigo-500/50 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-indigo-500/10 rounded-2xl text-indigo-500">
+                <i data-lucide="help-circle"></i>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Total</span>
+        </div>
+        <h3 class="text-3xl font-bold">{{ stats.total_questions }}</h3>
+        <p class="text-sm text-slate-400">Questions Asked</p>
+    </div>
+
+    <div class="glass p-6 rounded-3xl group hover:border-emerald-500/50 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500">
+                <i data-lucide="users"></i>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Platform</span>
+        </div>
+        <h3 class="text-3xl font-bold">{{ stats.total_users }}</h3>
+        <p class="text-sm text-slate-400">Total Users</p>
+    </div>
+
+    <div class="glass p-6 rounded-3xl group hover:border-amber-500/50 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-amber-500/10 rounded-2xl text-amber-500">
+                <i data-lucide="file-text"></i>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Avg</span>
+        </div>
+        <h3 class="text-3xl font-bold">{{ stats.avg_length }}</h3>
+        <p class="text-sm text-slate-400">Response Chars</p>
+    </div>
+
+    <div class="glass p-6 rounded-3xl group hover:border-pink-500/50 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <div class="p-3 bg-pink-500/10 rounded-2xl text-pink-500">
+                <i data-lucide="activity"></i>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Today</span>
+        </div>
+        <h3 class="text-3xl font-bold">{{ stats.today_activity }}</h3>
+        <p class="text-sm text-slate-400">Active Sessions</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Chart -->
+    <div class="lg:col-span-2 glass p-8 rounded-3xl">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-xl font-bold">Activity Overview</h2>
+            <select class="bg-transparent border border-slate-700 rounded-lg px-3 py-1 text-sm outline-none">
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+            </select>
+        </div>
+        <div class="h-[300px] w-full relative">
+            <canvas id="activityChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent History -->
+    <div class="glass p-8 rounded-3xl flex flex-col">
+        <h2 class="text-xl font-bold mb-6">Recent History</h2>
+        <div class="flex-1 space-y-4 overflow-y-auto custom-scrollbar pr-2">
+            {% for chat in recent_chats %}
+            <div class="p-4 bg-slate-200/50 dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-slate-700 transition-all">
+                <p class="text-sm font-semibold truncate">{{ chat.question }}</p>
+                <div class="flex items-center justify-between mt-2">
+                    <span class="text-xs text-slate-400">{{ chat.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                    <button class="text-red-400 hover:text-red-500 p-1">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            {% if not recent_chats %}
+            <div class="flex flex-col items-center justify-center py-12 text-slate-500">
+                <i data-lucide="ghost" class="w-12 h-12 mb-4 opacity-20"></i>
+                <p>No recent activity</p>
+            </div>
+            {% endif %}
+        </div>
+        <a href="/chat" class="mt-6 w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-center font-bold transition-colors">
+            Start New Chat
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('activityChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Questions',
+                data: [12, 19, 3, 5, 2, 3, 9],
+                borderColor: '#6366F1',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(99, 102, 241, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { display: false },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -12,14 +12,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 
-os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
-os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
+if PINECONE_API_KEY: os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
+if OPENAI_API_KEY: os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+if GOOGLE_API_KEY: os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
 
 
 
-extracted_data=load_pdf_files(data='data/')
+extracted_data=load_pdf_files(data='Data/')
 filter_data = filter_to_minimal_docs(extracted_data)
 text_chunks=text_split(filter_data)
 

@@ -1,0 +1,50 @@
+/* Custom Styles on top of TailwindCSS */
+
+body {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform: translateZ(0); /* Hardware acceleration */
+}
+
+[x-cloak] { 
+    display: none !important; 
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.9); /* More opaque, less blur needed */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.dark .glass {
+    background: rgba(15, 23, 42, 0.95);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.2);
+    border-radius: 10px;
+}
+
+/* Markdown styling adjustments */
+.prose pre {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+}
+
+.prose code {
+    color: #818cf8 !important;
+    background-color: rgba(99, 102, 241, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+}
