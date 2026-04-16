@@ -16,4 +16,5 @@ setup(
         "langchain-openai == 0.3.24",
         "langchain-community == 0.3.26",
     ],
+    
 )
