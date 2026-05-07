@@ -59,7 +59,7 @@ class ChatService:
                 "Content-Type": "application/json"
             }
             data = {
-                "model": "llama3-70b-8192",
+                "model": "llama-3.3-70b-versatile",
                 "messages": [
                     {"role": "system", "content": "You are a Medical Assistant. Provide clear, safe medical information."},
                     {"role": "user", "content": question}

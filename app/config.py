@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     PINECONE_API_KEY: str
     PINECONE_INDEX_NAME: str = "medical-chatbot"
     GOOGLE_API_KEY: str
-    GEMINI_MODEL: str = "gemini-3-flash"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
     GROQ_API_KEY: Optional[str] = None
     
     # Model config
