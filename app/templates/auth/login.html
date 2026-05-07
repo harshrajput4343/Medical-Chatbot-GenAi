@@ -1,40 +1,75 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | MedBot AI</title>
+    <meta name="description" content="Sign in to MedBot AI — your AI-powered medical assistant.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Login | MedBot AI">
+    <meta property="og:description" content="Sign in to access your AI-powered medical assistant.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harshmedbot.duckdns.org/auth/login">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🏥</text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="h-full flex items-center justify-center p-4">
-    <div class="max-w-md w-full space-y-8 bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-700">
-        <div class="text-center">
-            <h2 class="text-3xl font-extrabold text-white">Welcome Back</h2>
-            <p class="mt-2 text-sm text-slate-400">Sign in to your medical assistant</p>
+<body class="h-full flex flex-col bg-gray-50">
+    <!-- Thin Navbar — white, edge-to-edge -->
+    <nav class="bg-white border-b border-gray-200 px-6 lg:px-10">
+        <div class="flex items-center justify-between h-16">
+            <a href="/" class="flex items-center space-x-2">
+                <span class="text-2xl">🏥</span>
+                <span class="text-xl font-extrabold text-gray-900 tracking-tight">MedBot AI</span>
+            </a>
+            <div class="flex items-center space-x-3">
+                <a href="/auth/login"
+                   class="px-5 py-1.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-full transition-colors">
+                    Login
+                </a>
+                <a href="/auth/register"
+                   class="px-5 py-1.5 text-sm font-medium text-gray-700 hover:text-indigo-600 border border-gray-300 hover:border-indigo-300 rounded-full transition-colors">
+                    Register
+                </a>
+            </div>
         </div>
-        <form class="mt-8 space-y-6" action="/auth/login" method="POST">
-            <div class="space-y-4">
-                <div>
-                    <label for="email" class="text-sm font-medium text-slate-300">Email Address</label>
-                    <input id="email" name="email" type="email" required class="mt-1 block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                </div>
-                <div>
-                    <label for="password" class="text-sm font-medium text-slate-300">Password</label>
-                    <input id="password" name="password" type="password" required class="mt-1 block w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                </div>
-            </div>
+    </nav>
 
-            <div>
-                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Sign in
-                </button>
+    <!-- Centered Form Card -->
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900">Welcome Back</h2>
+                <p class="mt-2 text-sm text-gray-500">Sign in to your medical assistant</p>
             </div>
-        </form>
-        <div class="text-center">
-            <p class="text-sm text-slate-400">Don't have an account? <a href="/auth/register" class="font-medium text-indigo-400 hover:text-indigo-300">Register here</a></p>
+            <form class="mt-8 space-y-6" action="/auth/login" method="POST">
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="text-sm font-medium text-gray-700">Email Address</label>
+                        <input id="email" name="email" type="email" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label for="password" class="text-sm font-medium text-gray-700">Password</label>
+                        <input id="password" name="password" type="password" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Sign in
+                    </button>
+                </div>
+            </form>
+            <div class="text-center">
+                <p class="text-sm text-gray-500">Don't have an account? <a href="/auth/register" class="font-medium text-indigo-600 hover:text-indigo-500">Register here</a></p>
+            </div>
         </div>
     </div>
 </body>

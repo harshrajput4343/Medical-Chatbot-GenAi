@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedBot AI — Your AI-Powered Medical Assistant</title>
+    <meta name="description"
+        content="Get instant, evidence-based medical answers powered by advanced RAG technology and verified medical sources.">
+    <meta property="og:title" content="MedBot AI — Your AI Medical Assistant">
+    <meta property="og:description"
+        content="Get instant, evidence-based medical answers powered by RAG technology and verified medical sources.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harshmedbot.duckdns.org/">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🏥</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/static/css/landing.css?v=2">
+</head>
+
+<body class="landing-bg font-sans antialiased text-gray-800">
+
+    <!-- Blobs -->
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+    <div class="blob blob-3" aria-hidden="true"></div>
+
+    <!-- ====== S0: NAVBAR ====== -->
+    <nav class="glass-nav sticky top-0 z-50" x-data="{ mobileMenu: false }">
+        <div class="px-6 lg:px-10">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo — top left corner -->
+                <a href="/" class="flex items-center space-x-2">
+                    <span class="text-2xl">🏥</span>
+                    <span class="text-xl font-extrabold text-gray-900 tracking-tight">MedBot AI</span>
+                </a>
+
+                <!-- Desktop Nav — top right corner -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/auth/login"
+                        class="text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-colors">Login</a>
+                    <a href="/auth/register" class="btn-primary text-sm">Get Started</a>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <button @click="mobileMenu = !mobileMenu"
+                    class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg x-show="!mobileMenu" class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg x-show="mobileMenu" x-cloak class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div x-show="mobileMenu" x-cloak x-transition class="md:hidden pb-4 space-y-2">
+                <a href="/auth/login"
+                    class="block px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition-all">Login</a>
+                <a href="/auth/register" class="btn-primary block text-center text-sm">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ====== S1: HERO ====== -->
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="relative z-10 max-w-3xl mx-auto text-center">
+            <!-- Badge -->
+            <div class="badge-chip mx-auto mb-8 bg-indigo-50 border border-indigo-200 text-indigo-600">
+                <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+                AI-POWERED HEALTHCARE
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-gray-900 font-extrabold leading-tight"
+                style="font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.15;">
+                Your AI-Powered<br>
+                <span class="gradient-text">Medical Assistant</span>
+            </h1>
+
+            <!-- Subtext -->
+            <p class="mt-6 mx-auto text-gray-500 text-lg sm:text-xl leading-relaxed" style="max-width:580px;">
+                Get instant, evidence-based medical answers powered by advanced RAG technology and verified medical
+                sources.
+            </p>
+
+            <!-- CTAs -->
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/auth/login" class="btn-primary text-base" style="padding:12px 28px;">
+                    <span>⚡</span> Try MedBot
+                </a>
+                <a href="#features" class="btn-secondary text-base" style="padding:12px 28px;">
+                    Learn More <span class="text-xs">∨</span>
+                </a>
+            </div>
+
+            <!-- Trust Row -->
+            <div class="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-400">
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Evidence-based</span>
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Secure &amp; encrypted</span>
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Source citations</span>
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> PDF report generation</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== S2: FEATURES ====== -->
+    <section id="features" class="relative z-10 py-24 sm:py-32 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-gray-900 font-semibold" style="font-size:clamp(1.8rem,4vw,2.8rem);">Why Choose MedBot
+                    AI?</h2>
+                <p class="mt-4 mx-auto text-gray-500 text-lg" style="max-width:600px;">Built with cutting-edge AI and
+                    medical knowledge, designed to give you reliable answers when you need them most.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon-box mb-5" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">RAG-Based Answers</h3>
+                    <p class="text-gray-600 leading-relaxed">Powered by retrieval-augmented generation for accurate,
+                        context-aware medical responses drawn from verified knowledge bases.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon-box mb-5" style="background:linear-gradient(135deg,#0891b2,#14b8a6);">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Source Citations</h3>
+                    <p class="text-gray-600 leading-relaxed">Every answer includes references to verified medical
+                        literature and trusted sources so you can validate the information yourself.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon-box mb-5" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Secure &amp; Private</h3>
+                    <p class="text-gray-600 leading-relaxed">Enterprise-grade encryption with JWT authentication. Your
+                        medical queries and personal data stay completely confidential.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== S2.5: CLINICAL WORKFLOW VALUE PROP ====== -->
+    <section class="relative z-10 py-24 sm:py-32 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="section-badge mb-4 inline-block bg-indigo-50 text-indigo-600">HOW IT WORKS</span>
+                <h2 class="text-gray-900 font-semibold mt-4" style="font-size:clamp(1.8rem,4vw,2.8rem);">Built for the
+                    Clinical Workflow</h2>
+                <p class="mt-4 mx-auto text-gray-500 text-lg" style="max-width:640px;">MedBot AI bridges the gap between
+                    patient intake and clinical decision-making — so your team can focus on care, not paperwork.</p>
+            </div>
+
+            <!-- 3-Step Flow -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20">
+                <!-- Step 1 -->
+                <div class="glass-card p-10 text-center relative">
+                    <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-600 font-bold text-xl flex items-center justify-center mx-auto mb-6">1</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Receptionist Collects Data</h3>
+                    <p class="text-gray-600 text-base leading-relaxed">The front desk guides patients through a structured 9-step intake questionnaire — capturing chief complaints, symptoms, medical history, and medications in a standardized format.</p>
+                    <div class="hidden md:block absolute -right-6 top-1/2 -translate-y-1/2 text-gray-300 text-3xl z-10">→</div>
+                </div>
+                <!-- Step 2 -->
+                <div class="glass-card p-10 text-center relative">
+                    <div class="w-14 h-14 rounded-full bg-teal-100 text-teal-600 font-bold text-xl flex items-center justify-center mx-auto mb-6">2</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">AI Analyzes &amp; Reports</h3>
+                    <p class="text-gray-600 text-base leading-relaxed">MedBot's RAG engine processes the intake data against verified medical literature, generates a pre-consultation summary, and exports a clean PDF report — ready before the patient enters the exam room.</p>
+                    <div class="hidden md:block absolute -right-6 top-1/2 -translate-y-1/2 text-gray-300 text-3xl z-10">→</div>
+                </div>
+                <!-- Step 3 -->
+                <div class="glass-card p-10 text-center">
+                    <div class="w-14 h-14 rounded-full bg-violet-100 text-violet-600 font-bold text-xl flex items-center justify-center mx-auto mb-6">3</div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Doctor Reviews &amp; Decides</h3>
+                    <p class="text-gray-600 text-base leading-relaxed">The physician receives a concise, AI-analyzed patient brief — symptoms mapped, history organized, potential concerns flagged. No more deciphering handwritten notes or re-asking questions.</p>
+                </div>
+            </div>
+
+            <!-- Impact Stats Row -->
+            <div class="glass-card p-8 sm:p-10 mb-16">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-bold text-indigo-600">60%</p>
+                        <p class="text-gray-500 text-sm mt-1">Faster Pre-Consultation</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-bold text-teal-600">100%</p>
+                        <p class="text-gray-500 text-sm mt-1">Structured Data Capture</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-bold text-violet-600">Zero</p>
+                        <p class="text-gray-500 text-sm mt-1">Lost Patient Records</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-bold text-amber-600">24/7</p>
+                        <p class="text-gray-500 text-sm mt-1">AI-Powered Assistance</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+                <div>
+                    <span class="section-badge mb-4 inline-block bg-rose-50 text-rose-600">THE PROBLEM</span>
+                    <h3 class="text-gray-900 font-semibold mt-3 mb-4"
+                        style="font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;">Patients Struggle to Articulate
+                        Symptoms</h3>
+                    <p class="text-gray-600 leading-relaxed text-base mb-4">In a typical 10-minute consultation, many
+                        patients feel rushed, nervous, or unable to fully explain their symptoms — especially chronic
+                        conditions with complex histories.</p>
+                    <p class="text-gray-600 leading-relaxed text-base">MedBot's guided intake form gives patients the
+                        space and structure to share everything <em>before</em> they walk in. The result? Doctors start
+                        every consultation already informed, patients feel heard, and no critical detail gets lost in
+                        translation.</p>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <p class="text-gray-900 font-medium">Saves Doctor Time</p>
+                                <p class="text-gray-500 text-sm">Pre-analyzed reports mean less time on history-taking,
+                                    more time on diagnosis and care.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <p class="text-gray-900 font-medium">Proper Data Records</p>
+                                <p class="text-gray-500 text-sm">Every intake is digitally stored, searchable, and
+                                    available for future consultations — no more lost files.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <p class="text-gray-900 font-medium">Better Follow-Up Care</p>
+                                <p class="text-gray-500 text-sm">Historical intake data creates a longitudinal view of
+                                    the patient — making future consultations faster and more informed.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <p class="text-gray-900 font-medium">Patients Feel Heard</p>
+                                <p class="text-gray-500 text-sm">A structured questionnaire ensures every symptom,
+                                    concern, and detail is captured — even what patients forget to mention in person.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== S3: PLATFORM FEATURES ====== -->
+    <section class="relative z-10 py-24 sm:py-32 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-gray-900 font-semibold" style="font-size:clamp(1.8rem,4vw,2.8rem);">Everything You Need,
+                    In One Platform</h2>
+                <p class="mt-4 mx-auto text-gray-500 text-lg" style="max-width:620px;">A complete medical AI workspace —
+                    from instant answers to pre-consultation reports.</p>
+            </div>
+
+            <!-- Feature A: Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-28">
+                <div>
+                    <span class="section-badge mb-4 inline-block bg-indigo-50 text-indigo-600">DASHBOARD</span>
+                    <h3 class="text-gray-900 font-semibold mt-3 mb-4"
+                        style="font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;">Track Every Interaction</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">Monitor questions asked, total users, response
+                        quality, and patient reports — all from a clean analytics overview.</p>
+                </div>
+                <div class="preview-card flex items-center gap-4">
+                    <span class="text-4xl">📊</span>
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">Activity Overview</p>
+                        <p class="text-sm text-gray-400">Last 7 Days · Live Stats</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature B: AI Chat -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-28">
+                <div class="order-2 md:order-1 preview-card flex items-center gap-4">
+                    <span class="text-4xl">🤖</span>
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">RAG Pipeline: Optimized</p>
+                        <p class="text-sm text-gray-400">INDEX: LIVE · Powered by Gemini 3 Flash</p>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="section-badge mb-4 inline-block bg-teal-50 text-teal-600">AI CHAT</span>
+                    <h3 class="text-gray-900 font-semibold mt-3 mb-4"
+                        style="font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;">Ask Anything, Get Cited Answers</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">Powered by Gemini 3 Flash + Pinecone RAG. Live
+                        pipeline trace shows embedding → retrieval → generation in real time.</p>
+                </div>
+            </div>
+
+            <!-- Feature C: Patient Intake -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center mb-20 md:mb-28">
+                <div>
+                    <span class="section-badge mb-4 inline-block bg-amber-50 text-amber-600">PATIENT INTAKE</span>
+                    <h3 class="text-gray-900 font-semibold mt-3 mb-4"
+                        style="font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;">Guided Pre-Consultation Flow</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">A 9-step scripted questionnaire collects patient
+                        history — chief complaint, duration, past symptoms, medications, and tests.</p>
+                </div>
+                <div class="preview-card flex items-center gap-4">
+                    <span class="text-4xl">📋</span>
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">Pre-Consultation · Step 1 of 9</p>
+                        <p class="text-sm text-gray-400">Scripted Questionnaire · Patient Intake Form</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature D: PDF Report -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+                <div class="order-2 md:order-1 preview-card flex items-center gap-4">
+                    <span class="text-4xl">📄</span>
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">Generate Pre-Consultation Report</p>
+                        <p class="text-sm text-gray-400">Complete ✓ · PDF Export Ready</p>
+                    </div>
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="section-badge mb-4 inline-block bg-rose-50 text-rose-600">REPORT</span>
+                    <h3 class="text-gray-900 font-semibold mt-3 mb-4"
+                        style="font-size:clamp(1.4rem,3vw,2rem);line-height:1.25;">Generate Clinical Reports Instantly
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">After intake completion, generate a downloadable
+                        pre-consultation PDF report summarizing all patient data in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== S4: FOOTER ====== -->
+    <footer class="relative z-10 py-8 px-4 border-t border-gray-200">
+        <div
+            class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+            <p>© 2025 MedBot AI · Built by <span class="text-gray-600">Harsh Kumar</span></p>
+            <a href="https://github.com/harshrajput4343/Medical-Chatbot-GenAi" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-2 text-gray-400 hover:text-indigo-500 transition-colors">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                GitHub
+            </a>
+        </div>
+    </footer>
+</body>
+
+</html>

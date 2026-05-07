@@ -17,3 +17,4 @@ langchain-community==0.3.7
 sentence-transformers==3.2.1
 pypdf==5.1.0
 pinecone-client==5.0.1
+reportlab==4.1.0

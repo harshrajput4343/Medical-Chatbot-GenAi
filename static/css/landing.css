@@ -1,0 +1,229 @@
+/* ============================================
+   MedBot AI — Landing Page Styles
+   Light Glassmorphism Design System
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ---------- Background ---------- */
+.landing-bg {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 40%, #e8eef5 70%, #f5f7fa 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ---------- Floating Ambient Blobs ---------- */
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    will-change: transform;
+    z-index: 0;
+}
+
+.blob-1 {
+    width: 520px;
+    height: 520px;
+    background: rgba(99, 102, 241, 0.08);
+    top: -8%;
+    left: -6%;
+    animation: blobFloat1 20s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+    width: 440px;
+    height: 440px;
+    background: rgba(20, 184, 166, 0.06);
+    top: 45%;
+    right: -10%;
+    animation: blobFloat2 22s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+    width: 380px;
+    height: 380px;
+    background: rgba(59, 130, 246, 0.07);
+    bottom: -6%;
+    left: 28%;
+    animation: blobFloat3 20s ease-in-out infinite alternate;
+}
+
+@keyframes blobFloat1 {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, -40px) scale(1.1); }
+}
+
+@keyframes blobFloat2 {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-35px, 45px) scale(0.9); }
+}
+
+@keyframes blobFloat3 {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, -30px) scale(1.08); }
+}
+
+@media (max-width: 768px) {
+    .blob { opacity: 0.4; }
+}
+
+/* ---------- Glass Card (light) ---------- */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(91, 94, 244, 0.15);
+    box-shadow: 0 8px 32px rgba(91, 94, 244, 0.1);
+    transform: translateY(-4px);
+}
+
+/* ---------- Sticky Navbar ---------- */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- CTA Pill Buttons ---------- */
+.btn-primary {
+    background: #5b5ef4;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background: #4a4de3;
+    box-shadow: 0 0 24px rgba(91, 94, 244, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #1e293b;
+    padding: 10px 22px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.35);
+    transform: translateY(-1px);
+}
+
+/* ---------- Feature Icon Box ---------- */
+.feature-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ---------- Gradient Text (blue) ---------- */
+.gradient-text {
+    background: linear-gradient(90deg, #5b5ef4, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ---------- Hero Glow ---------- */
+.hero-glow {
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(91, 94, 244, 0.06) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ---------- Badge Chip ---------- */
+.badge-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ---------- Section Badge ---------- */
+.section-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ---------- Preview Card (light) ---------- */
+.preview-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: all 0.3s ease;
+}
+
+.preview-card:hover {
+    border-color: rgba(91, 94, 244, 0.12);
+    box-shadow: 0 8px 32px rgba(91, 94, 244, 0.08);
+}
+
+/* ---------- Auth Navbar (login/register pages — stays dark) ---------- */
+.auth-nav {
+    background: rgba(6, 11, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title if title else "Medical Chatbot v2" }}</title>
+    <meta name="description" content="MedBot AI — Your AI-powered medical assistant with RAG-based answers and source citations.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MedBot AI — Your AI Medical Assistant">
+    <meta property="og:description" content="Get instant, evidence-based medical answers powered by RAG technology.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harshmedbot.duckdns.org/">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🏥</text></svg>">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +53,7 @@
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
             <div class="flex flex-col h-full">
                 <div class="flex items-center justify-between p-6">
-                    <span class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">MedBot AI</span>
+                    <a href="/dashboard" class="text-2xl font-bold text-indigo-500 hover:text-indigo-400 transition-colors">MedBot AI</a>
                     <button @click="sidebarOpen = false" class="lg:hidden p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg">
                         <i data-lucide="x"></i>
                     </button>
@@ -57,6 +67,10 @@
                     <a href="/chat" class="flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 hover:bg-slate-200 dark:hover:bg-slate-800 {{ 'bg-indigo-500/10 text-indigo-500' if request.url.path == '/chat' else '' }}">
                         <i data-lucide="message-square"></i>
                         <span class="font-medium">AI Chat</span>
+                    </a>
+                    <a href="/intake" class="flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 hover:bg-slate-200 dark:hover:bg-slate-800 {{ 'bg-indigo-500/10 text-indigo-500' if request.url.path == '/intake' else '' }}">
+                        <i data-lucide="clipboard-list"></i>
+                        <span class="font-medium">Patient Intake</span>
                     </a>
                 </nav>
 

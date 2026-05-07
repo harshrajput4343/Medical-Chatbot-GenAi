@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 load_dotenv()
 
 from app.database import Base
-from app.models import user, chat # ensure tables are loaded
+from app.models import user, chat, intake  # ensure tables are loaded
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

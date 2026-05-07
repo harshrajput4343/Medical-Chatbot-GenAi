@@ -41,16 +41,16 @@
     <div class="glass p-6 rounded-3xl group hover:border-pink-500/50 transition-all duration-300">
         <div class="flex items-center justify-between mb-4">
             <div class="p-3 bg-pink-500/10 rounded-2xl text-pink-500">
-                <i data-lucide="activity"></i>
+                <i data-lucide="clipboard-list"></i>
             </div>
-            <span class="text-xs font-bold text-slate-400">Today</span>
+            <span class="text-xs font-bold text-slate-400">Reports</span>
         </div>
-        <h3 class="text-3xl font-bold">{{ stats.today_activity }}</h3>
-        <p class="text-sm text-slate-400">Active Sessions</p>
+        <h3 class="text-3xl font-bold">{{ stats.total_intakes }}</h3>
+        <p class="text-sm text-slate-400">Patient Reports</p>
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
     <!-- Chart -->
     <div class="lg:col-span-2 glass p-8 rounded-3xl">
         <div class="flex items-center justify-between mb-8">
@@ -91,6 +91,68 @@
             Start New Chat
         </a>
     </div>
+</div>
+
+<!-- Recent Patient Reports -->
+<div class="glass p-8 rounded-3xl">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center space-x-3">
+            <div class="p-2 bg-indigo-500/10 rounded-xl text-indigo-500">
+                <i data-lucide="clipboard-list"></i>
+            </div>
+            <h2 class="text-xl font-bold">Recent Patient Reports</h2>
+        </div>
+        <a href="/intake" class="text-sm font-semibold text-indigo-500 hover:text-indigo-400 transition-colors flex items-center space-x-1">
+            <span>New Report</span>
+            <i data-lucide="plus" class="w-4 h-4"></i>
+        </a>
+    </div>
+
+    {% if recent_intakes %}
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                    <th class="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Patient</th>
+                    <th class="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Age/Sex</th>
+                    <th class="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider hidden md:table-cell">Chief Complaint</th>
+                    <th class="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
+                    <th class="pb-3 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">PDF</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                {% for intake in recent_intakes %}
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td class="py-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="h-8 w-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 font-bold text-sm">
+                                {{ intake.name[0] | upper }}
+                            </div>
+                            <span class="font-semibold text-sm">{{ intake.name }}</span>
+                        </div>
+                    </td>
+                    <td class="py-4 text-sm text-slate-500 hidden sm:table-cell">{{ intake.age }} / {{ intake.sex }}</td>
+                    <td class="py-4 text-sm text-slate-500 hidden md:table-cell max-w-[200px] truncate">{{ intake.chief_complaint }}</td>
+                    <td class="py-4 text-sm text-slate-400">{{ intake.created_at.strftime('%b %d, %Y') }}</td>
+                    <td class="py-4 text-right">
+                        <a href="/api/v1/intake/{{ intake.id }}/pdf"
+                           class="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-semibold hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            <span>PDF</span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="flex flex-col items-center justify-center py-12 text-slate-500">
+        <i data-lucide="clipboard-list" class="w-12 h-12 mb-4 opacity-20"></i>
+        <p class="mb-2">No patient reports yet</p>
+        <a href="/intake" class="text-sm font-semibold text-indigo-500 hover:text-indigo-400 transition-colors">Create your first report →</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 

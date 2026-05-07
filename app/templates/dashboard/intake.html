@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block page_title %}Patient Intake{% endblock %}
+
+{% block content %}
+<div class="flex flex-col h-full bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden relative"
+     x-data="intakeForm()" x-init="startChat()">
+
+    <!-- Progress Bar -->
+    <div class="absolute top-0 left-0 right-0 z-20 h-1 bg-slate-100 dark:bg-slate-800">
+        <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500 ease-out rounded-r-full"
+             :style="'width: ' + ((currentStep / totalSteps) * 100) + '%'"></div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="px-4 sm:px-6 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex items-center justify-between mt-1">
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <div class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/50">
+                <i data-lucide="clipboard-list" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+            <div>
+                <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-widest">Pre-Consultation</p>
+                <p class="text-xs font-semibold text-slate-700 dark:text-slate-200" x-text="isComplete ? 'Complete ✓' : 'Step ' + (currentStep + 1) + ' of ' + totalSteps"></p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2" x-show="!isComplete">
+            <template x-for="i in totalSteps" :key="i">
+                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300"
+                     :class="i <= currentStep ? 'bg-indigo-500 scale-110' : (i === currentStep + 1 ? 'bg-indigo-300 dark:bg-indigo-700' : 'bg-slate-200 dark:bg-slate-700')">
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:px-12 space-y-6 sm:space-y-8" id="intake-messages">
+
+        <template x-for="(msg, idx) in chatMessages" :key="idx">
+            <div :class="['flex items-start space-x-3 sm:space-x-5', msg.type === 'user' ? 'flex-row-reverse space-x-reverse' : '']"
+                 class="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <!-- Avatar -->
+                <div :class="[
+                    'h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 rounded-2xl flex items-center justify-center text-white shadow-md',
+                    msg.type === 'user' ? 'bg-slate-800 dark:bg-indigo-600' : 'bg-indigo-600 dark:bg-slate-700'
+                ]">
+                    <i :data-lucide="msg.type === 'user' ? 'user' : 'clipboard-list'" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                </div>
+
+                <!-- Bubble -->
+                <div :class="[
+                    'px-4 py-3 sm:p-5 rounded-3xl shadow-sm max-w-[85%] sm:max-w-xl lg:max-w-3xl transition-all',
+                    msg.type === 'user'
+                        ? 'bg-indigo-600 rounded-tr-none text-white'
+                        : 'bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 text-slate-800 dark:text-slate-100 rounded-tl-none'
+                ]">
+                    <p class="text-sm sm:text-[15px] leading-relaxed" x-html="msg.content"></p>
+                </div>
+            </div>
+        </template>
+
+        <!-- Choice Buttons (Sex) -->
+        <div x-show="currentStep === 2 && !isComplete && !answers.sex" x-transition
+             class="flex items-start space-x-3 sm:space-x-5">
+            <div class="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0"></div>
+            <div class="flex flex-wrap gap-2 sm:gap-3">
+                <template x-for="option in ['Male', 'Female', 'Other']" :key="option">
+                    <button @click="selectChoice(option)"
+                            class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-sm font-semibold border-2 border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 dark:hover:bg-indigo-600 dark:hover:text-white dark:hover:border-indigo-600 transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md"
+                            x-text="option">
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Choice Buttons (Previous Visit) -->
+        <div x-show="currentStep === 8 && !isComplete && !answers.previous_visit_answered" x-transition
+             class="flex items-start space-x-3 sm:space-x-5">
+            <div class="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0"></div>
+            <div class="flex flex-wrap gap-2 sm:gap-3">
+                <template x-for="option in ['Yes', 'No']" :key="option">
+                    <button @click="selectChoice(option)"
+                            class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-2xl text-sm font-semibold border-2 border-indigo-200 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 dark:hover:bg-indigo-600 dark:hover:text-white dark:hover:border-indigo-600 transition-all duration-200 active:scale-95 shadow-sm hover:shadow-md"
+                            x-text="option">
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div x-show="isBotTyping" x-transition class="flex items-start space-x-3 sm:space-x-5">
+            <div class="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 bg-indigo-600 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                <i data-lucide="clipboard-list" class="w-4 h-4 sm:w-5 sm:h-5 animate-pulse"></i>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 px-4 py-3 sm:p-5 rounded-3xl rounded-tl-none shadow-sm">
+                <div class="flex space-x-1.5 items-center">
+                    <div class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce"></div>
+                    <div class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                    <div class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Bar -->
+    <div class="p-4 sm:p-6 lg:p-8 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/80 backdrop-blur-xl">
+
+        <!-- Generate Report Button (shown after completion) -->
+        <div x-show="isComplete && !intakeId" x-transition class="max-w-4xl mx-auto mb-4">
+            <button @click="generateReport()"
+                    :disabled="isSaving"
+                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl transition-all duration-200 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center space-x-3">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span x-text="isSaving ? 'Generating Report...' : 'Generate Pre-Consultation Report'"></span>
+                <div x-show="isSaving" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            </button>
+        </div>
+
+        <!-- Download Button (shown after save) -->
+        <div x-show="intakeId" x-transition class="max-w-4xl mx-auto mb-4">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a :href="'/api/v1/intake/' + intakeId + '/pdf'"
+                   class="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center space-x-3">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span>Download PDF Report</span>
+                </a>
+                <button @click="resetForm()"
+                        class="sm:w-auto bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    <span>New Intake</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Text Input (hidden for choice steps and after completion) -->
+        <form @submit.prevent="submitAnswer()" x-show="!isComplete && !isChoiceStep()" x-transition
+              class="max-w-4xl mx-auto flex items-end space-x-3 sm:space-x-4">
+            <div class="flex-1 relative">
+                <input type="text"
+                       x-model="userInput"
+                       x-ref="textInput"
+                       :placeholder="getPlaceholder()"
+                       class="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl sm:rounded-3xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-slate-800 dark:text-slate-100 placeholder-slate-400 outline-none focus:border-indigo-500 dark:focus:border-indigo-500 transition-all shadow-sm"
+                       :disabled="isBotTyping">
+            </div>
+            <button type="submit"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl transition-all active:scale-95 disabled:opacity-50"
+                    :disabled="!userInput.trim() || isBotTyping">
+                <i data-lucide="arrow-up" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+            </button>
+        </form>
+
+        <div class="max-w-4xl mx-auto mt-3 sm:mt-4 flex items-center justify-between">
+            <span class="flex items-center text-[9px] sm:text-[10px] font-bold text-indigo-500 uppercase tracking-widest">
+                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-1.5 animate-pulse"></span>
+                Scripted Questionnaire
+            </span>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                Patient Intake Form
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function intakeForm() {
+    return {
+        currentStep: 0,
+        totalSteps: 9,
+        userInput: '',
+        isBotTyping: false,
+        isComplete: false,
+        isSaving: false,
+        intakeId: null,
+        chatMessages: [],
+        answers: {
+            name: '',
+            age: '',
+            sex: '',
+            chief_complaint: '',
+            duration: '',
+            past_symptoms: '',
+            previous_medications: '',
+            previous_tests: '',
+            previous_visit: false,
+            previous_visit_answered: false,
+        },
+
+        questions: [
+            "👋 Welcome! I'll help you fill out a <strong>pre-consultation report</strong>. Let's start — what is the <strong>patient's full name</strong>?",
+            "Thank you! How <strong>old</strong> is the patient?",
+            "Got it. What is the patient's <strong>sex</strong>?",
+            "Now, what is the <strong>chief complaint</strong> or main issue the patient is facing?",
+            "How <strong>long</strong> has the patient been facing this issue?",
+            "Are there any <strong>past symptoms</strong> worth mentioning? <span class='text-xs text-slate-400'>(type \"None\" if not applicable)</span>",
+            "Any <strong>previous medications</strong> the patient has taken for this? <span class='text-xs text-slate-400'>(type \"None\" if not applicable)</span>",
+            "Any <strong>previous tests</strong> that were done? <span class='text-xs text-slate-400'>(type \"None\" if not applicable)</span>",
+            "Has the patient <strong>visited a hospital</strong> for this issue before?"
+        ],
+
+        answerKeys: [
+            'name', 'age', 'sex', 'chief_complaint', 'duration',
+            'past_symptoms', 'previous_medications', 'previous_tests', 'previous_visit'
+        ],
+
+        startChat() {
+            this.addBotMessage(this.questions[0]);
+        },
+
+        isChoiceStep() {
+            return this.currentStep === 2 || this.currentStep === 8;
+        },
+
+        getPlaceholder() {
+            const placeholders = [
+                'Enter patient\'s full name...',
+                'Enter age (e.g., 34)...',
+                '',
+                'Describe the main issue...',
+                'e.g., 2 weeks, 3 months...',
+                'List past symptoms or type None...',
+                'List medications or type None...',
+                'List tests or type None...',
+                '',
+            ];
+            return placeholders[this.currentStep] || 'Type your answer...';
+        },
+
+        addBotMessage(content) {
+            this.isBotTyping = true;
+            setTimeout(() => {
+                this.isBotTyping = false;
+                this.chatMessages.push({ type: 'bot', content: content });
+                this.$nextTick(() => {
+                    this.scrollToBottom();
+                    lucide.createIcons();
+                    if (!this.isChoiceStep() && this.$refs.textInput) {
+                        this.$refs.textInput.focus();
+                    }
+                });
+            }, 600);
+        },
+
+        addUserMessage(content) {
+            this.chatMessages.push({ type: 'user', content: content });
+            this.$nextTick(() => this.scrollToBottom());
+        },
+
+        submitAnswer() {
+            const value = this.userInput.trim();
+            if (!value) return;
+
+            // Validate age
+            if (this.currentStep === 1) {
+                const age = parseInt(value);
+                if (isNaN(age) || age < 0 || age > 150) {
+                    this.addBotMessage("⚠️ Please enter a valid age (0–150).");
+                    return;
+                }
+                this.answers.age = age;
+            } else {
+                this.answers[this.answerKeys[this.currentStep]] = value;
+            }
+
+            this.addUserMessage(value);
+            this.userInput = '';
+            this.advanceStep();
+        },
+
+        selectChoice(option) {
+            if (this.currentStep === 2) {
+                this.answers.sex = option;
+            } else if (this.currentStep === 8) {
+                this.answers.previous_visit = option === 'Yes';
+                this.answers.previous_visit_answered = true;
+            }
+            this.addUserMessage(option);
+            this.advanceStep();
+        },
+
+        advanceStep() {
+            this.currentStep++;
+            if (this.currentStep >= this.totalSteps) {
+                this.isComplete = true;
+                this.addBotMessage(
+                    "✅ All information collected! Here's a summary:<br><br>" +
+                    "<strong>Name:</strong> " + this.answers.name + "<br>" +
+                    "<strong>Age:</strong> " + this.answers.age + "<br>" +
+                    "<strong>Sex:</strong> " + this.answers.sex + "<br>" +
+                    "<strong>Chief Complaint:</strong> " + this.answers.chief_complaint + "<br>" +
+                    "<strong>Duration:</strong> " + this.answers.duration + "<br>" +
+                    "<strong>Past Symptoms:</strong> " + (this.answers.past_symptoms || 'None') + "<br>" +
+                    "<strong>Medications:</strong> " + (this.answers.previous_medications || 'None') + "<br>" +
+                    "<strong>Tests:</strong> " + (this.answers.previous_tests || 'None') + "<br>" +
+                    "<strong>Previous Visit:</strong> " + (this.answers.previous_visit ? 'Yes' : 'No') + "<br><br>" +
+                    "Click <strong>Generate Report</strong> below to create your PDF."
+                );
+            } else {
+                this.addBotMessage(this.questions[this.currentStep]);
+            }
+        },
+
+        async generateReport() {
+            this.isSaving = true;
+            try {
+                const payload = {
+                    name: this.answers.name,
+                    age: parseInt(this.answers.age),
+                    sex: this.answers.sex,
+                    chief_complaint: this.answers.chief_complaint,
+                    duration: this.answers.duration,
+                    past_symptoms: this.answers.past_symptoms || null,
+                    previous_medications: this.answers.previous_medications || null,
+                    previous_tests: this.answers.previous_tests || null,
+                    previous_visit: this.answers.previous_visit,
+                };
+
+                const res = await fetch('/api/v1/intake/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to save intake');
+                }
+
+                const data = await res.json();
+                this.intakeId = data.intake_id;
+
+                this.addBotMessage(
+                    "📄 Report generated successfully! Click <strong>Download PDF Report</strong> below to save your pre-consultation form."
+                );
+
+                // Auto-trigger download
+                this.$nextTick(() => {
+                    window.open('/api/v1/intake/' + this.intakeId + '/pdf', '_blank');
+                });
+
+            } catch (err) {
+                this.addBotMessage("❌ Something went wrong: " + err.message + ". Please try again.");
+            } finally {
+                this.isSaving = false;
+            }
+        },
+
+        resetForm() {
+            this.currentStep = 0;
+            this.isComplete = false;
+            this.isSaving = false;
+            this.intakeId = null;
+            this.userInput = '';
+            this.chatMessages = [];
+            this.answers = {
+                name: '', age: '', sex: '',
+                chief_complaint: '', duration: '', past_symptoms: '',
+                previous_medications: '', previous_tests: '',
+                previous_visit: false, previous_visit_answered: false,
+            };
+            this.startChat();
+        },
+
+        scrollToBottom() {
+            const el = document.getElementById('intake-messages');
+            if (el) el.scrollTop = el.scrollHeight;
+        },
+    };
+}
+</script>
+{% endblock %}

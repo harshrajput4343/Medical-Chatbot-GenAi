@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from .routers import auth, chat, api, dashboard
+from .routers import auth, chat, api, dashboard, intake
 from .database import engine, Base
 from .config import settings
 
@@ -17,6 +17,7 @@ app.include_router(dashboard.router)
 app.include_router(auth.router)
 app.include_router(chat.router)
 app.include_router(api.router)
+app.include_router(intake.router)
 
 if __name__ == "__main__":
     import uvicorn
